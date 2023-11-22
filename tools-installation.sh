@@ -52,6 +52,7 @@ if command -v dnsmorph &> /dev/null; then
 else
     echo "Failed to install dnsmorph. Please check the installation process."
 fi
+chmod +x dnsmorph
 
 # Install googler
 echo "Installing googler..."
@@ -76,3 +77,9 @@ fi
 rm googler_4.3.2-1_ubuntu20.04.amd64.deb
 rm dnsmorph_1.2.8_linux_64-bit.tar.gz
 rm go1.21.4.linux-amd64.tar.gz
+
+# Get URL input
+read -p "Enter the URL: " url
+
+# Run dnsmorph command
+./dnsmorph -d "$url" -r -g -w -json
