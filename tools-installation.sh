@@ -82,4 +82,4 @@ rm go1.21.4.linux-amd64.tar.gz
 read -p "Enter the URL: " url
 
 # Run dnsmorph command
-./dnsmorph -d "$url" -r -g -w -json
+./dnsmorph -d "$url" -r -g -w -json > "$url"-result.json
