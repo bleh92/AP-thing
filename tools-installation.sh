@@ -28,8 +28,24 @@ else
     
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
     check_error "Failed to install Go"
-    
-    export PATH=$PATH:/usr/local/go/bin
+
+        # Check and update/export PATH
+    if grep -q "export PATH=\$PATH:/usr/local/go/bin" ~/.bashrc; then
+        sed -i 's/export PATH=\$PATH:\/usr\/local\/go\/bin/export PATH=\$PATH:\/usr\/local\/go\/bin/' ~/.bashrc
+        echo "Updated export PATH statement in .bashrc"
+    else
+        echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+        echo "Added export PATH statement to .bashrc"
+    fi
+    # Check and update/export GOBIN
+    if grep -q "export GOBIN=/usr/local/go/bin" ~/.bashrc; then
+        sed -i 's/export GOBIN=\/usr\/local\/go\/bin/export GOBIN=\/usr\/local\/go\/bin/' ~/.bashrc
+        echo "Updated export GOBIN statement in .bashrc"
+    else
+        echo 'export GOBIN=/usr/local/go/bin' >> ~/.bashrc
+        echo "Added export GOBIN statement to .bashrc"
+    fi
+
     
     # Verify if Go is installed
     if command -v go &> /dev/null; then
@@ -39,6 +55,7 @@ else
     fi
 fi
 
+source ~/.bashrc
 # Install dnsmorph
 echo "Installing dnsmorph..."
 wget https://github.com/netevert/dnsmorph/releases/download/v1.2.8/dnsmorph_1.2.8_linux_64-bit.tar.gz
