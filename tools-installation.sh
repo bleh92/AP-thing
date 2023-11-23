@@ -63,6 +63,18 @@ check_error "Failed to download dnsmorph"
 tar -xzf dnsmorph_1.2.8_linux_64-bit.tar.gz
 check_error "Failed to install dnsmorph"
 
+#Installing checkdmarc
+echo "Installing checkdmarc..."
+sudo apt-get install python3-pip -y 
+pip3 install -U checkdmarc
+pip3 install -U git+https://github.com/domainaware/checkdmarc.git
+
+# Verify if checkdmarc is installed
+if command -v checkdmarc &> /dev/null; then
+    echo "checkdmarc has been successfully installed."
+else
+    echo "Failed to install checkdmarc. Please check the installation process."
+fi
 # Verify if dnsmorph is installed
 if command -v dnsmorph &> /dev/null; then
     echo "dnsmorph has been successfully installed."
