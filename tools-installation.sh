@@ -70,6 +70,7 @@ else
     echo "Failed to install dnsmorph. Please check the installation process."
 fi
 chmod +x dnsmorph
+mv dnsmorph /usr/local/go/bin
 
 # Install googler
 echo "Installing googler..."
