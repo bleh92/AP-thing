@@ -74,19 +74,16 @@ else
 fi
 #Installing dnsx 
 echo "Installing dnsx.."
-wget https://github.com/projectdiscovery/dnsx/releases/download/v1.1.6/dnsx_1.1.6_linux_amd64.zip
-check_error "Failed to download dnsx"
-unzip dnsx_1.1.6_linux_amd64.zip
-check_error "Failed to download dnsx"
+go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+
+#Installing subdomainfinder
+echo "Installing subfinder"
+go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 
 
 # Clean up
 rm googler_4.3.2-1_ubuntu20.04.amd64.deb
 rm dnsmorph_1.2.8_linux_64-bit.tar.gz
 rm go1.21.4.linux-amd64.tar.gz
+ 
 
-# Get URL input
-read -p "Enter the URL: " url
-
-# Run dnsmorph command
-./dnsmorph -d "$url" -r -g -w -json > "$url"-result.json
