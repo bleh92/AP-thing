@@ -76,7 +76,7 @@ fi
 echo "Installing dnsx.."
 wget https://github.com/projectdiscovery/dnsx/releases/download/v1.1.6/dnsx_1.1.6_linux_amd64.zip
 check_error "Failed to download dnsx"
-tar -xzf https://github.com/projectdiscovery/dnsx/releases/download/v1.1.6/dnsx_1.1.6_linux_amd64.zip
+unzip dnsx_1.1.6_linux_amd64.zip
 check_error "Failed to download dnsx"
 
 
