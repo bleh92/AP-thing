@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+LOOT_DIR="$SCRIPT_DIR/LOOT"
+mkdir -p "$LOOT_DIR"
 # Check if the script is running as root
 if [ "$(id -u)" != "0" ]; then
     echo "This script must be run as root."
@@ -31,35 +34,42 @@ echo "Running commands for $target_url:"
 echo "-----------Finding dmarc records-----------"
 checkdmarc "$target_url" -o "$target_url.json"
 
+#check_rep
+git clone https://github.com/dfirsec/check_rep.git
+cd check_rep
+pip install -r requirements.txt
+python3 check_rep.py -q $target_url > "$target_url-reputation.txt"
+echo "Add Virus Total API key to the script" 
 # dnsmorph
 dnsmorph -d "$target_url" -w -r -g -json > "$target_url-dnsmorph-results.json"
 dnsmorph -d "$target_url" > "$target_url-permutations.txt" 
+
 # subfinder
 echo "-----------Finding all subdomain-----------"
-subfinder -d "$target_url" -all -oJ > "$target_url-subfinder-results.json"
+subfinder -d "$target_url" -all -oJ > "$LOOT_DIR/$target_url-subfinder-results.json"
 echo "-----------Finding a records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -a -resp -j > "$target_url-a-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -a -resp -j > "$LOOT_DIR/$target_url-a-record-results.json"
 echo "-----------Finding aaaa records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -aaaa -resp -j > "$target_url-aaaa-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -aaaa -resp -j > "$LOOT_DIR/$target_url-aaaa-record-results.json"
 echo "-----------Finding cname records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -cname -resp -j > "$target_url-cname-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -cname -resp -j > "$LOOT_DIR/$target_url-cname-record-results.json"
 echo "-----------Finding ns records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -ns -resp -j > "$target_url-ns-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -ns -resp -j > "$LOOT_DIR/$target_url-ns-record-results.json"
 echo "-----------Finding txt records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -txt -resp -j > "$target_url-txt-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -txt -resp -j > "$LOOT_DIR/$target_url-txt-record-results.json"
 echo "-----------Finding srv records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -srv -resp -j > "$target_url-srv-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -srv -resp -j > "$LOOT_DIR/$target_url-srv-record-results.json"
 echo "-----------Finding ptr records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -ptr -resp -j > "$target_url-ptr-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -ptr -resp -j > $LOOT_DIR/"$target_url-ptr-record-results.json"
 echo "-----------Finding mx records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -mx -resp -j > "$target_url-mx-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -mx -resp -j > "$LOOT_DIR/$target_url-mx-record-results.json"
 echo "-----------Finding soa records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -soa -resp -j > "$target_url-soa-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -soa -resp -j > "$LOOT_DIR/$target_url-soa-record-results.json"
 echo "-----------Finding axfr records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -axfr -resp -j > "$target_url-axfr-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -axfr -resp -j > "$LOOT_DIR/$target_url-axfr-record-results.json"
 echo "-----------Finding caa records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -caa -resp -j > "$target_url-caa-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -caa -resp -j > "$LOOT_DIR/$target_url-caa-record-results.json"
 echo "-----------Finding any records-----------"
-subfinder -silent -d "$target_url" | dnsx -silent -any -resp -j > "$target_url-any-record-results.json"
+subfinder -silent -d "$target_url" | dnsx -silent -any -resp -j > "$LOOT_DIR/$target_url-any-record-results.json"
 
 echo "Script completed."
