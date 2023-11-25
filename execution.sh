@@ -34,12 +34,16 @@ echo "Running commands for $target_url:"
 echo "-----------Finding dmarc records-----------"
 checkdmarc "$target_url" -o "$target_url.json"
 
+#check dkim
+gem install dkim-query
+dkim-query "$target_url" 
+
 #check_rep
 git clone https://github.com/dfirsec/check_rep.git
-cd check_rep
-pip install -r requirements.txt
-python3 check_rep.py -q $target_url > "$target_url-reputation.txt"
+pip install -r "SCRIPT_DIR/check_rep/requirements.txt"
+python3 "SCRIPT_DIR/checl_rep/check_rep.py" -q $target_url > "$target_url-reputation.txt"
 echo "Add Virus Total API key to the script" 
+
 # dnsmorph
 dnsmorph -d "$target_url" -w -r -g -json > "$target_url-dnsmorph-results.json"
 dnsmorph -d "$target_url" > "$target_url-permutations.txt" 
