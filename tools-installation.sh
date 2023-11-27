@@ -13,7 +13,7 @@ if [ "$EUID" -ne 0 ]; then
     echo "ERROR: This script must be run as root."
     exit 1
 fi
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 
 sudo apt update && sudo apt upgrade -y
 # Check if Go is installed
@@ -71,11 +71,6 @@ pip3 install -U git+https://github.com/domainaware/checkdmarc.git
 #Installing dkim-query
 gem install dkim-query
 
-#Installing check_rep.py
-git clone https://github.com/dfirsec/check_rep.git
-pip install -r "SCRIPT_DIR/check_rep/requirements.txt" 
-
- 
 # Verify if dkim-query is installed
 if command -v dkim-query &> /dev/null; then
     echo "dkim-query has been successfully installed."
