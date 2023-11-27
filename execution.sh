@@ -32,21 +32,21 @@ echo "Running commands for $target_url:"
 
 #checkdmarc
 echo "-----------Finding dmarc records-----------"
-checkdmarc "$target_url" -o "$target_url.json"
+checkdmarc "$target_url" -o "$LOOT_DIR/$target_url.json"
 
 #check dkim
-dkim-query "$target_url" > "$target_url-dkim-query.txt"
+dkim-query "$target_url" > "$LOOT_DIR/$target_url-dkim-query.txt"
 
 #Installing check_rep.py
 git clone https://github.com/dfirsec/check_rep.git
 pip install -r "SCRIPT_DIR/check_rep/requirements.txt" 
 #check_rep
-python3 "SCRIPT_DIR/checl_rep/check_rep.py" -q $target_url > "$target_url-reputation.txt"
+python3 "SCRIPT_DIR/checl_rep/check_rep.py" -q $target_url > "$LOOT_DIR/$target_url-reputation.txt"
 echo "Add Virus Total API key to the script"
 
 # dnsmorph
-dnsmorph -d "$target_url" -w -r -g -json > "$target_url-dnsmorph-results.json"
-dnsmorph -d "$target_url" > "$target_url-permutations.txt" 
+dnsmorph -d "$target_url" -w -r -g -json > "$LOOT_DIR/$target_url-dnsmorph-results.json"
+dnsmorph -d "$target_url" > "$LOOT_DIR/$target_url-permutations.txt" 
 
 # subfinder
 echo "-----------Finding all subdomain-----------"
