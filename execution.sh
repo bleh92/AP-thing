@@ -37,6 +37,9 @@ checkdmarc "$target_url" -o "$target_url.json"
 #check dkim
 dkim-query "$target_url" > "$target_url-dkim-query.txt"
 
+#Installing check_rep.py
+git clone https://github.com/dfirsec/check_rep.git
+pip install -r "SCRIPT_DIR/check_rep/requirements.txt" 
 #check_rep
 python3 "SCRIPT_DIR/checl_rep/check_rep.py" -q $target_url > "$target_url-reputation.txt"
 echo "Add Virus Total API key to the script"
