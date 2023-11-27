@@ -15,7 +15,7 @@ command_exists() {
 }
 
 # Check if required tools are installed
-required_tools=("go" "googler" "subfinder" "dnsx" "dnsmorph")
+required_tools=("go" "googler" "subfinder" "dnsx" "dnsmorph" "checkdmarc" "dkim-query")
 
 for tool in "${required_tools[@]}"; do
     if ! command_exists "$tool"; then
@@ -35,14 +35,11 @@ echo "-----------Finding dmarc records-----------"
 checkdmarc "$target_url" -o "$target_url.json"
 
 #check dkim
-gem install dkim-query
 dkim-query "$target_url" 
 
 #check_rep
-git clone https://github.com/dfirsec/check_rep.git
-pip install -r "SCRIPT_DIR/check_rep/requirements.txt"
 python3 "SCRIPT_DIR/checl_rep/check_rep.py" -q $target_url > "$target_url-reputation.txt"
-echo "Add Virus Total API key to the script" 
+echo "Add Virus Total API key to the script"
 
 # dnsmorph
 dnsmorph -d "$target_url" -w -r -g -json > "$target_url-dnsmorph-results.json"
