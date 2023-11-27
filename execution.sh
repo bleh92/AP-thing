@@ -35,7 +35,7 @@ echo "-----------Finding dmarc records-----------"
 checkdmarc "$target_url" -o "$target_url.json"
 
 #check dkim
-dkim-query "$target_url" 
+dkim-query "$target_url" > "$target_url-dkim-query.txt"
 
 #check_rep
 python3 "SCRIPT_DIR/checl_rep/check_rep.py" -q $target_url > "$target_url-reputation.txt"
