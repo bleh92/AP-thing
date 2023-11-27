@@ -15,6 +15,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+sudo apt update && sudo apt upgrade -y
 # Check if Go is installed
 if command -v go &> /dev/null; then
     echo "Go is already installed."
